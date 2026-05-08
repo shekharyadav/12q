@@ -1,7 +1,45 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+function cn(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
+function Button({ children, className = "", variant = "default", ...props }) {
+  const variants = {
+    default: "bg-stone-950 text-white hover:bg-stone-800",
+    outline: "border border-stone-300 bg-white text-stone-950 hover:bg-stone-100",
+    ghost: "bg-transparent text-stone-700 hover:bg-stone-100",
+  };
+
+  return (
+    <button
+      className={cn(
+        "inline-flex items-center justify-center font-semibold transition disabled:pointer-events-none disabled:opacity-50",
+        variants[variant] || variants.default,
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
+function Card({ children, className = "", ...props }) {
+  return (
+    <div className={cn("border bg-white", className)} {...props}>
+      {children}
+    </div>
+  );
+}
+
+function CardContent({ children, className = "", ...props }) {
+  return (
+    <div className={className} {...props}>
+      {children}
+    </div>
+  );
+}
 
 const QUESTIONS = [
   "Tell me about yourself.",
