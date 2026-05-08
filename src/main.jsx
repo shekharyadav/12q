@@ -112,6 +112,7 @@ function TwelveQFramework() {
             <div className="pill no-print">12Q Interview Prep Framework</div>
             <h1>Prepare three strong versions of every answer.</h1>
             <p className="subtitle">Write three different copies for each common interview question. Aim for 30–50+ words per answer. Your work autosaves in this browser and can be printed anytime.</p>
+            <p className="subttitle">Based on the post from Laszlo - https://www.linkedin.com/in/laszlobock/</p>
             <div className="actions no-print">
               <button onClick={() => window.print()}><span>🖨️</span> Print answers</button>
               <button onClick={exportText} className="secondary"><span>⬇️</span> Export text</button>
@@ -175,6 +176,8 @@ function TwelveQFramework() {
                 })}
               </div>
             </article>
+                  <p className="subttitle">Built with <a href="https://axyen.ai">Axyen.AI</a>/</p>
+
           ))}
         </div>
       </section>
