@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { createRoot } from "react-dom/client";
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -84,7 +85,7 @@ function normalizeAnswers(value) {
   });
 }
 
-export default function TwelveQFramework() {
+function TwelveQFramework() {
   const [answers, setAnswers] = useState(() => createBlankAnswers());
   const [openAnswers, setOpenAnswers] = useState(() => ({ "0-0": true }));
   const [savedAt, setSavedAt] = useState(null);
@@ -306,3 +307,15 @@ export default function TwelveQFramework() {
     </div>
   );
 }
+
+const rootElement = document.getElementById("root");
+
+if (rootElement) {
+  createRoot(rootElement).render(
+    <React.StrictMode>
+      <TwelveQFramework />
+    </React.StrictMode>
+  );
+}
+
+export default TwelveQFramework;
