@@ -6,3 +6,28 @@ body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
 }
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  textarea {
+    border: none !important;
+    resize: none !important;
+    overflow: visible !important;
+  }
+}
