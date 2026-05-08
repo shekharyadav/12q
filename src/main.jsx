@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { motion } from "framer-motion";
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -72,6 +71,19 @@ function createBlankAnswers() {
   return QUESTIONS.map(() => ["", "", ""]);
 }
 
+function normalizeAnswers(value) {
+  const blank = createBlankAnswers();
+  if (!Array.isArray(value)) return blank;
+
+  return blank.map((questionAnswers, questionIndex) => {
+    const incomingQuestion = Array.isArray(value[questionIndex]) ? value[questionIndex] : [];
+    return questionAnswers.map((_, copyIndex) => {
+      const incomingAnswer = incomingQuestion[copyIndex];
+      return typeof incomingAnswer === "string" ? incomingAnswer : "";
+    });
+  });
+}
+
 export default function TwelveQFramework() {
   const [answers, setAnswers] = useState(() => createBlankAnswers());
   const [openAnswers, setOpenAnswers] = useState(() => ({ "0-0": true }));
@@ -82,7 +94,7 @@ export default function TwelveQFramework() {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed.answers)) setAnswers(parsed.answers);
+        if (Array.isArray(parsed.answers)) setAnswers(normalizeAnswers(parsed.answers));
         if (parsed.savedAt) setSavedAt(parsed.savedAt);
       }
     } catch (error) {
@@ -156,12 +168,7 @@ export default function TwelveQFramework() {
       `}</style>
 
       <section className="mx-auto max-w-6xl px-5 py-10 md:py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="grid gap-8 md:grid-cols-[1.1fr_.9fr] md:items-center"
-        >
+        <div className="grid gap-8 md:grid-cols-[1.1fr_.9fr] md:items-center">
           <div>
             <div>
               <div className="no-print mb-3 inline-flex items-center gap-2 rounded-full bg-rose-100 px-4 py-2 text-sm font-semibold text-rose-800">
@@ -214,7 +221,7 @@ export default function TwelveQFramework() {
               {savedAt && <p className="mt-1 text-xs text-stone-400">Autosaved locally: {new Date(savedAt).toLocaleString()}</p>}
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
 
         <div className="mt-12 space-y-8">
           {QUESTIONS.map((question, qIndex) => (
@@ -229,7 +236,7 @@ export default function TwelveQFramework() {
                 </div>
 
                 <div className="grid gap-4">
-                  {answers[qIndex].map((answer, aIndex) => {
+                  {(answers[qIndex] || ["", "", ""]).map((answer, aIndex) => {
                     const words = wordCount(answer);
                     const g = grade(words);
                     const key = `${qIndex}-${aIndex}`;
